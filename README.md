@@ -53,6 +53,17 @@ Becomes
 }
 ```
 
+###New Filter Option
+Filtering is now supported, if you want to flatten your json after doing other parsing from the original source log.
+```
+<filter pattern>
+  @type json_transform
+  transform_script [nothing|flatten|custom]
+  script_path "/home/grayson/transform_script.rb" # ignored if transform_script != custom
+</filter>
+```
+
+
 ##Implementing JSONTransformer
 
 The `JSONTransformer` class should have an instance method `transform` which takes a Ruby hash and returns a Ruby hash:
