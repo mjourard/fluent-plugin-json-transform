@@ -1,18 +1,18 @@
 # JSON Transform parser plugin for Fluentd
 
-##Overview
+## Overview
 This is a [parser plugin](http://docs.fluentd.org/articles/parser-plugin-overview) for fluentd. It is **INCOMPATIBLE WITH FLUENTD v0.10.45 AND BELOW.**
 
 
 It was created for the purpose of modifying [**good.js**](https://github.com/hapijs/good) logs
 before storing them in Elasticsearch. It may not be useful for any other purpose, but be creative.
 
-##Installation
+## Installation
 ```bash
 gem install fluent-plugin-json-transform
 ```
 
-##Configuration
+## Configuration
 ```
 <source>
   type [tail|tcp|udp|syslog|http] # or a custom input type which accepts the "format" parameter
@@ -25,11 +25,11 @@ gem install fluent-plugin-json-transform
 
 `transform_script`: `nothing` to do nothing, `flatten` to flatten JSON by concatenating nested keys (see below), or `custom` 
 
-`script_path`: ignored if not using `custom` script. Point this to a Ruby script which implements the [`class_name` | `JSONTransformer`] class.
+`script_path`: ignored if not using `custom` script. Point this to a Ruby script which implements the class from `class_name` parameter.
 
 `class_name`: [optional] ignored if not using `custom` script. Define name of a class which is used for transformation in `script_path` script.
 
-###Flatten script
+### Flatten script
 Flattens nested JSON by concatenating nested keys with '.'. Example:
 
 ```
@@ -56,7 +56,7 @@ Becomes
 }
 ```
 
-###New Filter Option
+### Filter Option
 If you want to flatten your json after doing other parsing from the original source log.
 ```
 <filter pattern>
@@ -68,7 +68,7 @@ If you want to flatten your json after doing other parsing from the original sou
 ```
 
 
-##Implementing transformer class
+## Implementing transformer class
 
 The transformer class should have an instance method `transform` which takes a Ruby hash and returns a Ruby hash. Pay attention that the name of a class should be the same as you defined in `class_name` parameter or `JSONTransformer` in case `class_name` parameter is not defined:
 
