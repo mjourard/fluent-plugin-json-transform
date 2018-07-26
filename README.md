@@ -19,12 +19,15 @@ gem install fluent-plugin-json-transform
   format json_transform
   transform_script [nothing|flatten|custom]
   script_path "/home/grayson/transform_script.rb" # ignored if transform_script != custom
+  class_name "CustomJSONTransformer" # [optional] default value is "JSONTransformer", ignored if transform_script != custom
 </source>
 ```
 
 `transform_script`: `nothing` to do nothing, `flatten` to flatten JSON by concatenating nested keys (see below), or `custom` 
 
-`script_path`: ignored if not using `custom` script. Point this to a Ruby script which implements the `JSONTransformer` class.
+`script_path`: ignored if not using `custom` script. Point this to a Ruby script which implements the [`class_name` | `JSONTransformer`] class.
+
+`class_name`: [optional] ignored if not using `custom` script. Define name of a class which is used for transformation in `script_path` script.
 
 ###Flatten script
 Flattens nested JSON by concatenating nested keys with '.'. Example:
@@ -54,23 +57,24 @@ Becomes
 ```
 
 ###New Filter Option
-Filtering is now supported, if you want to flatten your json after doing other parsing from the original source log.
+If you want to flatten your json after doing other parsing from the original source log.
 ```
 <filter pattern>
   @type json_transform
   transform_script [nothing|flatten|custom]
   script_path "/home/grayson/transform_script.rb" # ignored if transform_script != custom
+  class_name "CustomJSONTransformer" # [optional] default value is "JSONTransformer", ignored if transform_script != custom
 </filter>
 ```
 
 
-##Implementing JSONTransformer
+##Implementing transformer class
 
-The `JSONTransformer` class should have an instance method `transform` which takes a Ruby hash and returns a Ruby hash:
+The transformer class should have an instance method `transform` which takes a Ruby hash and returns a Ruby hash. Pay attention that the name of a class should be the same as you defined in `class_name` parameter or `JSONTransformer` in case `class_name` parameter is not defined:
 
 ```ruby
 # lib/transform/flatten.rb
-class JSONTransformer
+class JSONTransformer # or any class name defined in class_name parameter
   def transform(json)
     return flatten(json, "")
   end
