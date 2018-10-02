@@ -1,18 +1,19 @@
 # JSON Transform parser plugin for Fluentd
 
-##Overview
+## Overview
 This is a [parser plugin](http://docs.fluentd.org/articles/parser-plugin-overview) for fluentd. It is **INCOMPATIBLE WITH FLUENTD v0.10.45 AND BELOW.**
 
 
 It was created for the purpose of modifying [**good.js**](https://github.com/hapijs/good) logs
 before storing them in Elasticsearch. It may not be useful for any other purpose, but be creative.
 
-##Installation
+## Installation
+
 ```bash
 gem install fluent-plugin-json-transform
 ```
 
-##Configuration
+## Configuration
 ```
 <source>
   type [tail|tcp|udp|syslog|http] # or a custom input type which accepts the "format" parameter
@@ -26,10 +27,10 @@ gem install fluent-plugin-json-transform
 
 `script_path`: ignored if not using `custom` script. Point this to a Ruby script which implements the `JSONTransformer` class.
 
-###Flatten script
+### Flatten script
 Flattens nested JSON by concatenating nested keys with '.'. Example:
 
-```
+```json
 {
   "hello": {
     "world": true
@@ -45,7 +46,7 @@ Flattens nested JSON by concatenating nested keys with '.'. Example:
 
 Becomes
 
-```
+```json
 {
   "hello.world": true,
   "goodbye.for.now": true,
@@ -53,8 +54,9 @@ Becomes
 }
 ```
 
-###New Filter Option
+### New Filter Option
 Filtering is now supported, if you want to flatten your json after doing other parsing from the original source log.
+
 ```
 <filter pattern>
   @type json_transform
@@ -64,7 +66,7 @@ Filtering is now supported, if you want to flatten your json after doing other p
 ```
 
 
-##Implementing JSONTransformer
+## Implementing JSONTransformer
 
 The `JSONTransformer` class should have an instance method `transform` which takes a Ruby hash and returns a Ruby hash:
 
